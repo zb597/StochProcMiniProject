@@ -1,220 +1,264 @@
-#To calculate the disease metrics in the house finch-MG example
-
-#Create the matrix P that contains the transition probabilities for susceptibles (state 0),
-#infected (state 1) and dead (state 2) in the year 2002
-
-# Define the transition probabilities, pij
-
-p00 = 0.92
-p01 = 0.02
-p02 = 0.06
-
-p10 = 0.09
-p11 = 0.71
-p12 = 0.20
-
-p20 = 0
-p21 = 0
-p22 = 1
-
-# Enter the transition probabilities into a matrix P
-P = matrix(c(p00,p01,p02, p10,p11,p12, p20,p21,p22),3,3,byrow=TRUE)
-# Print the matrix P
-P
-
-#We want to calculate the probability distributions for infection of susceptible individuals
-
-#We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
-
-# Multiply P times P to determine the 2-step transition probabilities
-P%*%P
-
-
-
-#Calculate the probability of first infection at each time step for a susceptible individual 
-
-# Create the number of time steps, n
-n=c(1:50)
-
-# Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 4
-f01n = rep(0,length(n))
-
-#Use eqn 4 to calculate the probability of first infection at each time step
-f01n = p01 * p00^(0:length(n))
-
-# print the values
-f01n
-
-
-
-#Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
-
-# Create a vector with zero values (as place holders) called pinfected that is the length of n
-pinfected = rep(0,length(n))
-
-# Write a loop that sums the probability of first infection at each time step
-for (j in 1:length(pinfected)) {
-  pinfected[j] = sum(f01n[1:j])
-}
-
-# Print the pinfected value
-pinfected
-
-
-
-#We want to calculate the probability distributions for recovery of infected individuals
-
-#We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
-
-#Calculate the probability of recovery at each time step for an infected individual 
-
-# Create the number of time steps, n
-n=c(1:50)
-
-# Create a vector with zero values (as place holders) that is the length of n for f10(n) as defined in eqn 5
-f10n = rep(0,length(n))
-
-#Use eqn 5 to calculate the probability of recovery at each time step
-f10n= p10 * p11^(0:length(n))
-
-# print the values
-f10n
-
-
-
-#Use the f10n vector to calculate the probability that an infected individual has recovered by a given time step
-
-# Create a vector with zero values (as place holders) called precovered that is the length of n
-precovered= rep(0,length(n))
-
-# Write a loop that sums the probability of recovery at each time step
-for (j in 1:length(precovered)) {
-  precovered[j] = sum(f10n[1:j])
-}
-
-# Print the precovered value
-precovered
-
-
-
-#Create the matrix Q that contains the transition probabilities for susceptibles (state 0),
-#infected (state 1) and dead (state 2) in the year 2003
-
-# Define the transition probabilities, qij
-
-q00 = 0.88
-q01 = 0.03
-q02 = 0.09
-
-q10 = 0.23
-q11 = 0.63
-q12 = 0.14
-
-q20 = 0
-q21 = 0
-q22 = 1
-
-# Enter the transition probabilities into a matrix P
-Q = matrix(c(q00,q01,q02, q10,q11,q12, q20,q21,q22),3,3,byrow=TRUE)
-# Print the matrix P
-Q
-
-#We want to calculate the probability distributions for infection of susceptible individuals
-
-#We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
-
-# Multiply P times P to determine the 2-step transition probabilities
-Q%*%Q
-
-
-
-#Calculate the probability of first infection at each time step for a susceptible individual 
-
-# Create the number of time steps, n
-n=c(1:50)
-
-# Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 4
-g01n = rep(0,length(n))
-
-#Use eqn 4 to calculate the probability of first infection at each time step
-g01n = q01 * q00^(0:length(n))
-
-# print the values
-g01n
-
-#Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
-
-# Create a vector with zero values (as place holders) called pinfected that is the length of n
-qinfected = rep(0,length(n))
-
-# Write a loop that sums the probability of first infection at each time step
-for (j in 1:length(qinfected)) {
-  qinfected[j] = sum(g01n[1:j])
-}
-
-# Print the qinfected value
-qinfected
-
-
-
-#We want to calculate the probability distributions for recovery of infected individuals
-
-#We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
-
-#Calculate the probability of recovery at each time step for an infected individual  
-
-# Create the number of time steps, n
-n=c(1:50)
-
-# Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 5
-g10n = rep(0,length(n))
-
-#Use eqn 5 to calculate the probability of recovery at each time step
-g10n= q10 * q11^(0:length(n))
-
-# print the values
-g10n
-
-
-
-#Use the f10n vector to calculate the probability that an infected individual has recovered by a given time step
-
-# Create a vector with zero values (as place holders) called qrecovered that is the length of n
-qrecovered = rep(0,length(n))
-
-# Write a loop that sums the probability of recovery at each time step
-for (j in 1:length(qrecovered)) {
-  qrecovered[j] = sum(g10n[1:j])
-}
-
-# Print the qrecovered value
-qrecovered
-
-
-
-#We want to plot the probability that a susceptible individual becomes infected for the first time between the m-1
-#and m time steps
-#We want to plot the probability that a susceptible individual has recovered over the duration of study
-
-i<-1:6
-z1<-f01n[i]
-z2<-f10n[i]
-z3<-g01n[i]
-z4<-g10n[i]
-plot(z1, ylim=c(0,0.25), type="l", col="red",xlab="Weeks", ylab="Probability of first transtion", main="Probability that a susceptible house finch first becomes infected with MG and the probability that an infected individual first recovers")
-lines(i,z2,col="green")
-lines(i,z3,col="black")
-lines(i,z4,col="orange")
-
-#We want to plot the cumulative probabilities that a susceptible individual becomes infected
-#Likewise, the cumulative probability that an infected individual has recovered over the duration of study
-
-j<-1:6
-y1<-pinfected[j]
-y2<-qinfected[j]
-y3<-precovered[j]
-y4<-qrecovered[j]
-plot(y1, ylim=c(0,0.7), type="l",col="red", xlab="Weeks", ylab="Cumulative probability of transition", main="Cumulative probability that a susceptible individual has been infected and an infected individual has recovered")
-lines(j,y2,col="green")
-lines(j,y3,col="black")
-lines(j,y4,col="orange")
+  #To calculate the disease metrics in the house finch-MG example
+  
+  #Create the matrix P that contains the transition probabilities for susceptibles (state 0),
+  #infected (state 1) and dead (state 2) in the year 2002
+  
+  # Define the transition probabilities, pij
+  
+  p00 = 0.92
+  p01 = 0.02
+  p02 = 0.06
+  
+  p10 = 0.09
+  p11 = 0.71
+  p12 = 0.20
+  
+  p20 = 0
+  p21 = 0
+  p22 = 1
+  
+  # Enter the transition probabilities into a matrix P
+  P = matrix(c(p00,p01,p02, p10,p11,p12, p20,p21,p22),3,3,byrow=TRUE)
+  # Print the matrix P
+  P
+  
+  #We want to calculate the probability distributions for infection of susceptible individuals
+  
+  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
+  
+  # Multiply P times P to determine the 2-step transition probabilities
+  P%*%P
+  
+  
+  
+  #Calculate the probability of first infection at each time step for a susceptible individual 
+  
+  # Create the number of time steps, n
+  n=c(1:50)
+  
+  # Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 4
+  f01n = rep(0,length(n))
+  
+  #Use eqn 4 to calculate the probability of first infection at each time step
+  f01n = p01 * p00^(0:length(n))
+  
+  # print the values
+  f01n
+  
+  
+  
+  #Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
+  
+  # Create a vector with zero values (as place holders) called pinfected that is the length of n
+  pinfected = rep(0,length(n))
+  
+  # Write a loop that sums the probability of first infection at each time step
+  for (j in 1:length(pinfected)) {
+    pinfected[j] = sum(f01n[1:j])
+  }
+  
+  # Print the pinfected value
+  pinfected
+  
+  
+  
+  #We want to calculate the probability distributions for recovery of infected individuals
+  
+  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
+  
+  #Calculate the probability of recovery at each time step for an infected individual 
+  
+  # Create the number of time steps, n
+  n=c(1:50)
+  
+  # Create a vector with zero values (as place holders) that is the length of n for f10(n) as defined in eqn 5
+  f10n = rep(0,length(n))
+  
+  #Use eqn 5 to calculate the probability of recovery at each time step
+  f10n= p10 * p11^(0:length(n))
+  
+  # print the values
+  f10n
+  
+  
+  
+  #Use the f10n vector to calculate the probability that an infected individual has recovered by a given time step
+  
+  # Create a vector with zero values (as place holders) called precovered that is the length of n
+  precovered= rep(0,length(n))
+  
+  # Write a loop that sums the probability of recovery at each time step
+  for (j in 1:length(precovered)) {
+    precovered[j] = sum(f10n[1:j])
+  }
+  
+  # Print the precovered value
+  precovered
+  
+  
+  
+  #Create the matrix Q that contains the transition probabilities for susceptibles (state 0),
+  #infected (state 1) and dead (state 2) in the year 2003
+  
+  # Define the transition probabilities, qij
+  
+  q00 = 0.88
+  q01 = 0.03
+  q02 = 0.09
+  
+  q10 = 0.23
+  q11 = 0.63
+  q12 = 0.14
+  
+  q20 = 0
+  q21 = 0
+  q22 = 1
+  
+  # Enter the transition probabilities into a matrix P
+  Q = matrix(c(q00,q01,q02, q10,q11,q12, q20,q21,q22),3,3,byrow=TRUE)
+  # Print the matrix P
+  Q
+  
+  #We want to calculate the probability distributions for infection of susceptible individuals
+  
+  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
+  
+  # Multiply P times P to determine the 2-step transition probabilities
+  Q%*%Q
+  
+  
+  
+  #Calculate the probability of first infection at each time step for a susceptible individual 
+  
+  # Create the number of time steps, n
+  n=c(1:50)
+  
+  # Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 4
+  g01n = rep(0,length(n))
+  
+  #Use eqn 4 to calculate the probability of first infection at each time step
+  g01n = q01 * q00^(0:length(n))
+  
+  # print the values
+  g01n
+  
+  #Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
+  
+  # Create a vector with zero values (as place holders) called pinfected that is the length of n
+  qinfected = rep(0,length(n))
+  
+  # Write a loop that sums the probability of first infection at each time step
+  for (j in 1:length(qinfected)) {
+    qinfected[j] = sum(g01n[1:j])
+  }
+  
+  # Print the qinfected value
+  qinfected
+  
+  
+  
+  #We want to calculate the probability distributions for recovery of infected individuals
+  
+  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
+  
+  #Calculate the probability of recovery at each time step for an infected individual  
+  
+  # Create the number of time steps, n
+  n=c(1:50)
+  
+  # Create a vector with zero values (as place holders) that is the length of n for f01(n) as defined in eqn 5
+  g10n = rep(0,length(n))
+  
+  #Use eqn 5 to calculate the probability of recovery at each time step
+  g10n= q10 * q11^(0:length(n))
+  
+  # print the values
+  g10n
+  
+  
+  
+  #Use the f10n vector to calculate the probability that an infected individual has recovered by a given time step
+  
+  # Create a vector with zero values (as place holders) called qrecovered that is the length of n
+  qrecovered = rep(0,length(n))
+  
+  # Write a loop that sums the probability of recovery at each time step
+  for (j in 1:length(qrecovered)) {
+    qrecovered[j] = sum(g10n[1:j])
+  }
+  
+  # Print the qrecovered value
+  qrecovered
+  
+  
+  
+  #We want to plot the probability that a susceptible individual becomes infected for the first time between the m-1
+  #and m time steps
+  #We want to plot the probability that a susceptible individual has recovered over the duration of study
+  
+  i<-1:6
+  z1<-f01n[i]
+  z2<-f10n[i]
+  z3<-g01n[i]
+  z4<-g10n[i]
+  plot(z1, ylim=c(0,0.25), type="l", col="red",xlab="Weeks", ylab="Probability of first transtion", main="Probability that a susceptible house finch first becomes infected with MG and the probability that an infected individual first recovers")
+  lines(i,z2,col="green")
+  lines(i,z3,col="black")
+  lines(i,z4,col="orange")
+  legend('topright',c("Infection (S to I) in 2002","Recovery (I to S) in 2002","Infection (S to I) in 2003","Recovery (I to S) in 2003"), lty=c(1,1,1,1), lwd=c(2.5,2.5,2.5,2.5), col=c("red","green","black","orange"))
+  
+  #We want to plot the cumulative probabilities that a susceptible individual becomes infected
+  #Likewise, the cumulative probability that an infected individual has recovered over the duration of study
+  
+  j<-1:6
+  y1<-pinfected[j]
+  y2<-qinfected[j]
+  y3<-precovered[j]
+  y4<-qrecovered[j]
+  plot(y1, ylim=c(0,0.7), type="l",col="red", xlab="Weeks", ylab="Cumulative probability of transition", main="Cumulative probability that a susceptible individual has been infected and an infected individual has recovered")
+  lines(j,y2,col="green")
+  lines(j,y3,col="black")
+  lines(j,y4,col="orange")
+  legend('topleft',legend=c("CP of Infection (S to I) in 2002","CP of Recovery (I to S) in 2002","CP of Infection (S to I) in 2003","CP of Recovery (I to S) in 2003"),lty=c(1,1,1,1), lwd=c(2.5,2.5,2.5,2.5), col=c("red","green","black","orange"))
+  
+  
+  
+  #Find the life expectancy (expected time to absorption) for susceptible and infected states in the year 2002
+  
+  # Create a matrix R with the transition probabilities for the transient states
+  R = matrix(c(p00,p01, p10,p11),2,2,byrow=TRUE)
+  
+  # Define an identity matrix called Identity, I
+  I=matrix(c(1,0, 0,1),2,2,byrow=TRUE)
+  
+  # Find the inverse of the Identity matrix minus R using the command "solve" and call it InvsIminusR
+  IminusR = I - R
+  InvsIminusR = solve(IminusR)
+  
+  # Create a 2 by 1 vector with the value 1 in each element
+  one = matrix(c(1,1),2,1,byrow=T)
+  
+  # Use eqn 9 to find life expectancies
+  W = (InvsIminusR)%*%one
+  W
+  
+  
+  
+  #Find the life expectancy (expected time to absorption) for susceptible and infected states in the year 2003
+  
+  # Create a matrix R with the transition probabilities for the transient states
+  S = matrix(c(q00,q01, q10,q11),2,2,byrow=TRUE)
+  
+  # Define an identity matrix called Identity, I
+  I=matrix(c(1,0, 0,1),2,2,byrow=TRUE)
+  
+  # Find the inverse of the Identity matrix minus S using the command "solve" and call it InvsIminusS
+  IminusS = I - S
+  InvsIminusS = solve(IminusS)
+  
+  # Create a 2 by 1 vector with the value 1 in each element
+  one = matrix(c(1,1),2,1,byrow=T)
+  
+  # Use eqn 9 to find life expectancies
+  X = (InvsIminusS)%*%one
+  X
