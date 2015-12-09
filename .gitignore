@@ -1,4 +1,4 @@
-   #To calculate the disease metrics in the house finch-MG example
+  #To calculate the disease metrics in the house finch-MG example
   #Calculate probabilities of first infection and recovery then the probabilities by a given time step
   #We create a graph to show what happens to the population over time
   #We use work from the paper to shw life expectancies for susceptible and infected individuals
