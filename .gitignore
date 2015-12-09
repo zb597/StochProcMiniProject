@@ -1,4 +1,7 @@
-  #To calculate the disease metrics in the house finch-MG example
+   #To calculate the disease metrics in the house finch-MG example
+  #Calculate probabilities of first infection and recovery then the probabilities by a given time step
+  #We create a graph to show what happens to the population over time
+  #We use work from the paper to shw life expectancies for susceptible and infected individuals
   
   #Create the matrix P that contains the transition probabilities for susceptibles (state 0),
   #infected (state 1) and dead (state 2) in the year 2002
@@ -22,15 +25,13 @@
   # Print the matrix P
   P
   
-  #We want to calculate the probability distributions for infection of susceptible individuals
+  #We want to calculate the probabilities of infection of susceptible individuals
   
-  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
+  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01}
+  #(eqn 4 referenced in paper)
+
   
-  # Multiply P times P to determine the 2-step transition probabilities
-  P%*%P
-  
-  
-  
+
   #Calculate the probability of first infection at each time step for a susceptible individual 
   
   # Create the number of time steps, n
@@ -47,7 +48,8 @@
   
   
   
-  #Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
+  #Use the f01n vector to calculate the probability that a susceptible individual has become infected by a
+  #given time step
   
   # Create a vector with zero values (as place holders) called pinfected that is the length of n
   pinfected = rep(0,length(n))
@@ -64,7 +66,8 @@
   
   #We want to calculate the probability distributions for recovery of infected individuals
   
-  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
+  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10}
+  #(eqn5 referenced in paper)
   
   #Calculate the probability of recovery at each time step for an infected individual 
   
@@ -121,10 +124,8 @@
   
   #We want to calculate the probability distributions for infection of susceptible individuals
   
-  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01} (eqn 4 referenced in paper)
-  
-  # Multiply P times P to determine the 2-step transition probabilities
-  Q%*%Q
+  #We use equation f_{01}^m=Pr{X_{n+m}=1,X_{n+m-1},...,X_{n+1}=0|X_{n}=0}=p_{00}^(m-1)*p_{01}
+  #(eqn 4 referenced in paper) Though here, we will use g01 instead of f01 to define the year 2003 separately from 2002
   
   
   
@@ -142,7 +143,8 @@
   # print the values
   g01n
   
-  #Use the f01n vector to calculate the probability that a susceptible individual has become infected by a given time step
+  #Use the g01n vector to calculate the probability that a susceptible individual has become infected by a 
+  #given time step
   
   # Create a vector with zero values (as place holders) called pinfected that is the length of n
   qinfected = rep(0,length(n))
@@ -159,7 +161,8 @@
   
   #We want to calculate the probability distributions for recovery of infected individuals
   
-  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10} (eqn5 referenced in paper)
+  #We use equation f_{10}^m=Pr{X_{n+m}=0,X_{n+m-1}=1,...,X_{n+1}=1|X_{n}=1}=p_{11}^(m-1)*p_{10}
+  #(eqn5 referenced in paper) Again, notation is g10 so we can differentiate between years 2002 and 2003 easily
   
   #Calculate the probability of recovery at each time step for an infected individual  
   
@@ -177,7 +180,7 @@
   
   
   
-  #Use the f10n vector to calculate the probability that an infected individual has recovered by a given time step
+  #Use the g10n vector to calculate the probability that an infected individual has recovered by a given time step
   
   # Create a vector with zero values (as place holders) called qrecovered that is the length of n
   qrecovered = rep(0,length(n))
@@ -196,34 +199,49 @@
   #and m time steps
   #We want to plot the probability that a susceptible individual has recovered over the duration of study
   
-  i<-1:6
-  z1<-f01n[i]
-  z2<-f10n[i]
-  z3<-g01n[i]
-  z4<-g10n[i]
-  plot(z1, ylim=c(0,0.25), type="l", col="red",xlab="Weeks", ylab="Probability of first transtion", main="Probability that a susceptible house finch first becomes infected with MG and the probability that an infected individual first recovers")
-  lines(i,z2,col="green")
-  lines(i,z3,col="black")
-  lines(i,z4,col="orange")
-  legend('topright',c("Infection (S to I) in 2002","Recovery (I to S) in 2002","Infection (S to I) in 2003","Recovery (I to S) in 2003"), lty=c(1,1,1,1), lwd=c(2.5,2.5,2.5,2.5), col=c("red","green","black","orange"))
+  i<-1:10
+  y1<-f01n[i]
+  y2<-f10n[i]
+  y3<-g01n[i]
+  y4<-g10n[i]
+  plot(y1, ylim=c(0,0.25), type="l", col="red",xlab="Weeks", ylab="Probability of first transtion",
+       main="Probability that a susceptible house finch first becomes infected with MG and the probability 
+       that an infected individual first recovers")
+  lines(i,y2,col="green")
+  lines(i,y3,col="purple")
+  lines(i,y4,col="orange")
+  legend('topright',c("Infection (S to I) in 2002","Recovery (I to S) in 2002","Infection (S to I) in 2003",
+                      "Recovery (I to S) in 2003"),
+         #Puts text in legend
+         lty=c(1,1,1,1),
+         #Gives legend the appropriate lines
+         lwd=c(2,2,2,2), col=c("red","green","purple","orange")
+         #Gives legend lines the correct colour and width
+         )
   
   #We want to plot the cumulative probabilities that a susceptible individual becomes infected
   #Likewise, the cumulative probability that an infected individual has recovered over the duration of study
   
-  j<-1:6
-  y1<-pinfected[j]
-  y2<-qinfected[j]
-  y3<-precovered[j]
-  y4<-qrecovered[j]
-  plot(y1, ylim=c(0,0.7), type="l",col="red", xlab="Weeks", ylab="Cumulative probability of transition", main="Cumulative probability that a susceptible individual has been infected and an infected individual has recovered")
-  lines(j,y2,col="green")
-  lines(j,y3,col="black")
-  lines(j,y4,col="orange")
-  legend('topleft',legend=c("CP of Infection (S to I) in 2002","CP of Recovery (I to S) in 2002","CP of Infection (S to I) in 2003","CP of Recovery (I to S) in 2003"),lty=c(1,1,1,1), lwd=c(2.5,2.5,2.5,2.5), col=c("red","green","black","orange"))
+  j<-1:10
+  z1<-pinfected[j]
+  z2<-qinfected[j]
+  z3<-precovered[j]
+  z4<-qrecovered[j]
+  plot(z1, ylim=c(0,0.7), type="l",col="red", xlab="Weeks", ylab="Cumulative probability of transition", 
+       main="Cumulative probability that a susceptible individual has been infected and an infected individual 
+       has recovered")
+  lines(j,z2,col="green")
+  lines(j,z3,col="purple")
+  lines(j,z4,col="orange")
+  legend('topleft',legend=c("CP of Infection (S to I) in 2002","CP of Recovery (I to S) in 2002",
+                            "CP of Infection (S to I) in 2003","CP of Recovery (I to S) in 2003"),
+         lty=c(1,1,1,1), lwd=c(2,2,2,2), col=c("red","green","purple","orange"))
+  
   
   
   
   #Find the life expectancy (expected time to absorption) for susceptible and infected states in the year 2002
+  #This is eqn 10 in the paper -> W=(I-Q)^-1 (1 1)^T
   
   # Create a matrix R with the transition probabilities for the transient states
   R = matrix(c(p00,p01, p10,p11),2,2,byrow=TRUE)
@@ -238,7 +256,7 @@
   # Create a 2 by 1 vector with the value 1 in each element
   one = matrix(c(1,1),2,1,byrow=T)
   
-  # Use eqn 9 to find life expectancies
+  # Use eqn 10 to find life expectancies where %*% indicates a matrix multiplication
   W = (InvsIminusR)%*%one
   W
   
@@ -246,7 +264,7 @@
   
   #Find the life expectancy (expected time to absorption) for susceptible and infected states in the year 2003
   
-  # Create a matrix R with the transition probabilities for the transient states
+  # Create a matrix S with the transition probabilities for the transient states
   S = matrix(c(q00,q01, q10,q11),2,2,byrow=TRUE)
   
   # Define an identity matrix called Identity, I
@@ -259,6 +277,6 @@
   # Create a 2 by 1 vector with the value 1 in each element
   one = matrix(c(1,1),2,1,byrow=T)
   
-  # Use eqn 9 to find life expectancies
+  # Use eqn 10 to find life expectancies
   X = (InvsIminusS)%*%one
   X
