@@ -205,8 +205,8 @@
   y3<-g01n[i]
   y4<-g10n[i]
   plot(y1, ylim=c(0,0.25), type="l", col="red",xlab="Weeks", ylab="Probability of first transtion",
-       main="Probability that a susceptible house finch first becomes infected with MG and the probability 
-       that an infected individual first recovers")
+       main="Probability that a susceptible house finch first becomes infected with MG and 
+       an infected individual first recovers")
   lines(i,y2,col="green")
   lines(i,y3,col="purple")
   lines(i,y4,col="orange")
@@ -228,8 +228,7 @@
   z3<-precovered[j]
   z4<-qrecovered[j]
   plot(z1, ylim=c(0,0.7), type="l",col="red", xlab="Weeks", ylab="Cumulative probability of transition", 
-       main="Cumulative probability that a susceptible individual has been infected and an infected individual 
-       has recovered")
+       main="Cumulative probability that a susceptible has been infected and an infected recovers")
   lines(j,z2,col="green")
   lines(j,z3,col="purple")
   lines(j,z4,col="orange")
