@@ -234,7 +234,7 @@
   lines(j,z4,col="orange")
   legend('topleft',legend=c("CP of Infection (S to I) in 2002","CP of Recovery (I to S) in 2002",
                             "CP of Infection (S to I) in 2003","CP of Recovery (I to S) in 2003"),
-         lty=c(1,1,1,1), lwd=c(2,2,2,2), col=c("red","green","purple","orange"))
+         lty=c(1,1,1,1), lwd=c(2,2,2,2), col=c("red","purple","green","orange"))
   
   
   
